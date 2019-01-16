@@ -2,4 +2,5 @@
 {"title":"ajaxFileUpload报错$.ajaxFileUpload is not a function解决方法","url":"/2019/01/15/ajaxfileupload/"},
 {"title":"Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）","url":"/2019/01/15/shopping/"},
 {"title":"Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）","url":"/2019/01/15/spring-mvc-demo/"},
+{"title":"Web端即时聊天项目实现（基于WebSocket）","url":"/2019/01/16/Web端即时聊天项目实现（基于WebSocket）/"},
 ]
