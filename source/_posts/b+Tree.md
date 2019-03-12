@@ -1,3 +1,9 @@
+title: B+树的Java实现
+tags:
+  - b+树
+  - 算法
+categories: 常见算法
+---
 # B+树 B+ Tree
 ## 定义
 B+树是一种多路平衡查找树,是对B树(B-Tree)的扩展.
