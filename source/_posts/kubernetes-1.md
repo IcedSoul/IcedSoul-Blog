@@ -6,7 +6,7 @@ categories: Kubernetes
 ---
 
 ## 前言
-之前的一年里已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识 的同学。
+之前的一年里我已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识的同学。
 
 我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出～
 
@@ -14,15 +14,15 @@ categories: Kubernetes
 作为系列博客的第一篇，今天主要来了解一下Kubernetes是什么，熟悉一下Kubernetes相关的一些常见术语。下一篇我会按照教程来搭建一个Kubernetes集群，再之后会在集群上一一尝试Kubernetes的各个组件，一边踩坑一边记录，一边学习～
 
 ## Kubernetes 是什么？
-> Kubernetes（K8s）是一个基于容器技术的分布式架构领先方案，同时它也是一种设计思想，它也是一个开放的开发平台，也是一个完备的分布式系统支撑平台[1]。	
+> Kubernetes（K8s）是一个基于容器技术的分布式架构领先方案，同时它也是一种设计思想，它也是一个开放的开发平台，也是一个完备的分布式系统支撑平台[1]。
 
 这是参考资料[1]中的定义，当然Kubernetes官网也给出了它的定义：
 
 > Kubernetes 是用于自动部署，扩展和管理容器化应用程序的开源系统[3]。
 
-从这些解释中可以看出，K8s是针对分布式系统的，与容器化技术相关，主要用于解决容器化应用程序的部署、扩展和管理。
+从这些解释中可以看出，K8s是针对分布式系统的，与容器化技术相关，主要用于解决容器化应用程序的部署、扩展和管理问题。
 
-那么以我目前的知识量来看，K8s是一套运维工具，开发时可以无需考虑最后是否使用它，如何使用它。如上面所说，它只是一个“平台”，是帮助我们来管理服务的。其它的目前也理解不了，现在先了解一下它的大概定位就行，后面随着深入的学习相关只是我们应该会对K8s的定位有更进一步的认识。
+那么以我目前的知识量来看，K8s是一套运维工具，开发时可以无需考虑最后是否使用它，如何使用它。如上面所说，它只是一个“平台”，是帮助我们来管理服务的。其它的目前也理解不了，现在先了解一下它的大概定位就行，后面随着深入的学习我们应该会对K8s的定位有更进一步的认识。
 
 Google在2014年基于Borg发布了Kubernetes，Borg是Google内部使用的一个大规模集群管理系统。Kubernetes汲取了Borg过去十年的经验和教训，一经开源就迅速受到开源社区的追捧，许多知名公司加入到开发和推广的阵营[2]。
 
@@ -64,7 +64,7 @@ K8s会把整个Cluster的资源整合之后抽象化之后来进行调度，同�
 
 在搭建集群的时候，我们会指定一台物理机或者虚拟机作为Master，它上面运行了K8s的核心服务，负责对整个Cluster进行管理和控制。上面主要运行着以下几个核心进程[1]：
 
- - Kubernetes API Server(kube-api-server): 集群控制的入口进程，提供了集群内所有资源的增删改查操作的入口。
+- Kubernetes API Server(kube-api-server): 集群控制的入口进程，提供了集群内所有资源的增删改查操作的入口。
 - Kubernetes Controller Manager(kube-controller-manager): 所有资源的自动化控制中心。
 - Kubernetes Scheduler(kube-scheduler): 负责资源调度的进程。
 - Etcd：负责存储所有资源对象的数据。
@@ -78,7 +78,7 @@ K8s会把整个Cluster的资源整合之后抽象化之后来进行调度，同�
 Node就是集群中的普通机器，它们负责运行容器。Master会管理集群中的所有Node，Node负责监控汇报它上面运行的容器的状态，并且根据Master调度来管理容器的生命周期。Node一旦宕机，Master会将运行在其上的容器转移到其它Node上。在Node上主要运行着以下几个核心进程[1]：
 
 - kubelet: 负责Pod对应容器的创建、启停等任务，和Master密切合作完成集群管理的功能。
-- kube-proxy:实现K8s Service的通信和负载均衡的重要组建。
+- kube-proxy:实现K8s Service的通信和负载均衡的重要组件。
 - docker:负责本机容器的创建和管理。
 
 Node可以随意增加和减少，只需要预先在Node上运行上述核心进程，然后向Master注册自己即可加入到集群之中。
@@ -94,7 +94,7 @@ K8s引入Pod的目的是[2]：
 
 ### Controller
 
-K8s是通过Controller来创建Pod的，这也是我们最需要了解的一个部分，我们平常就是通过Controller来配置Pod的。Controller提供了多种Controller来满足不同场景的需求[1]：
+K8s是通过Controller来创建Pod的，这也是我们最需要了解的一个重要部分，因为我们平常就是通过Controller来配置Pod的。Controller提供了多种Controller来满足不同场景的需求[1]：
 
 - Deployment：这是最常用的一种Controller,它可以管理Pod的运行。
 - ReplicaSet：实现了Pod的多副本管理，使用Deployment时会自动创建ReplicaSet，我们平常不需要直接使用ReplicaSet。
@@ -130,25 +130,24 @@ K8s相关的资源对象暂时介绍到这里，其实还有许多其它的东�
 
 那么，首先，根据上面的描述Master和Node分别跑了几个核心进程，那么就如下图所示：
 
-![01](/home/icedsoul/Desktop/kubernetes01/01.png)
+![01](http://img.icedsoul.cn/img/blog/kubernetes01/01.png)
 
-再结合每个进程的功能：Master中的kube-api-server给我们提供了资源管理的接口，所以我们可以在Master上面通过Deployment之类的Controller创建Pod。而kube-controller-manager则根据配置文件进行了创建，kube-scheduler将需要创建的资源对象平均调度到所有正常工作的Node中，并且将绑定信息写入etcd。
+再结合每个进程的功能：Master中的kube-api-server给我们提供了资源管理的接口，所以我们可以在Master上面通过Deployment之类的Controller定义Pod。而kube-controller-manager则根据配置创建对应的Pod，kube-scheduler将需要创建的资源对象平均调度到所有正常工作的Node中，并且将绑定信息写入etcd。
 
-而Node中收到了kubelet通过kube-api-server监听到了Pod绑定事件，从etcd中拉取到资源对象配置后，去下载对应镜像，最终，容器在docker中启动了起来。当外部应用通过Service访问这个容器时，Node的kube-proxy负责将流量转发给真正的Pod副本。
+而Node中kubelet通过kube-api-server监听到了Pod绑定事件，从etcd中拉取到资源对象配置后，去下载对应镜像。最终，容器在docker中启动了起来。当外部应用通过Service访问这个容器时，Node的kube-proxy负责将流量转发给真正的Pod副本。
 
-上面是Master和Node运行的进程的结构，也就是真正运行的物理结构，但是实际上K8s引入了Pod、Service等虚拟资源，实际上我们进行调度和分配的过程还比较复杂，我们这里先看一种比较简单的能够说明问题的结构：
+上面是Master和Node运行的进程的结构，也就是真正运行的物理结构，但是实际上K8s引入了Pod、Service等虚拟资源，实际上我们进行调度和分配的过程还比较复杂，我们这里先看一种简化后能够说明目前问题的结构：
 
-假设我们部署了一个Pod，这个Pod包含了两个Container：group和group-message，Pod的副本数量为2，同时我们创建了一个叫做group-service的Service关联到了这个副本，那么实际运行的情况应该是（此处为了简单起见，我们假设只有Node1和Node2两个Node，三个Node画图太大了不好截图233）：
+假设我们部署了一个Pod，这个Pod包含了两个Container：group和group-message，Pod的副本数量为2，同时我们创建了一个叫做group-service的Service关联到了这个副本，那么实际运行的情况应该是（此处为了简单起见，我们假设只有Node1和Node2两个Node，三个Node图太大了不好截图233）：
 
-![02](/home/icedsoul/Desktop/kubernetes01/02.png)
-
+![02](http://img.icedsoul.cn/img/blog/kubernetes01/02.png)
 
 
 两个Pod副本被分别调度到了两个Node中，但是两个Pod会和一个Service绑定，service会有一个Cluster IP，我们不需要知道实际上这个Pod在哪里运行，只需要通过Cluster IP：Port即可访问这个Pod中的容器。
 
 假设我们这是又部署了一个Pod,这个Pod只含有一个容器user，同时我们创建了一个user-service与这个Pod绑定了，那么这时候的图应该为：
 
-![03](/home/icedsoul/Desktop/kubernetes01/03.png)
+![03](http://img.icedsoul.cn/img/blog/kubernetes01/03.png)
 
 通过上面的解释和图片相信你能够对K8s的整体有了一定的认识。今天只是简单介绍一下K8s的大概情况和相关知识，帮助大家对所学习的内容建立起一个大概的印象，知道我们在学习的是一个什么东西，所以一直在空谈不动手。下节课我们将开始从零搭建一个K8s集群，后续我们将会在这个集群上进行更多的实验和学习。
 

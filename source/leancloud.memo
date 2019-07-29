@@ -10,6 +10,7 @@
 {"title":"ajaxFileUpload报错$.ajaxFileUpload is not a function解决方法","url":"/ajaxfileupload.html"},
 {"title":"B+树的Java实现","url":"/b+Tree.html"},
 {"title":"可扩展哈希 ExtendibleHash Java实现","url":"/extendible-hash.html"},
+{"title":"Kubernetes基础知识","url":"/kubernetes-1.html"},
 {"title":"Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）","url":"/shopping.html"},
 {"title":"Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）","url":"/spring-mvc-demo.html"},
 {"title":"Web端即时聊天项目实现（基于WebSocket）","url":"/websocket.html"},

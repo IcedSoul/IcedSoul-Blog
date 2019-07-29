@@ -16,42 +16,42 @@ B+树是一种多路平衡查找树,是对B树(B-Tree)的扩展.
 
 从定义可以看出来,一个M阶的B树,其叶子节点必须在同一层,每一个节点的子节点数目和键数目都是有规定的.其实不看定义,简单来说,B树是平衡的,而且非叶子节点的子节点是有限制的.最重要的一点是,B树的键是有序的,节点内部的键从左到右依次增大,而且对应的子节点的最小值和最大值在左右两个键之间,这样可以尽可能减少IO次数,提高查询效率.  
 而B+树基本定义与B树相同,不同之处在于:
-1. 有k个子节点就有k个键;
-2. 非叶节点仅有索引作用，具体信息均存放在叶节点;
-3. 树的所有叶子节点构成一个有序链表，可以按照键的排序次序遍历全部记录;
+1. 非叶节点仅有索引作用，具体信息均存放在叶节点;
+2. 树的所有叶子节点构成一个有序链表，可以按照键的排序次序遍历全部记录;
 
 其实理解起来也不难,就是所以非叶子节点只存储索引,不存储真正的值,而父节点所拥有的边界值在子节点中都存在.  
 我的理解是,虽然B+树相较于平衡二叉树实现麻烦,结构复杂,插入麻烦,但是M阶的B树,M越大,最后的树就越”粗壮”,查询所需要的次数也就越少,因为在数据库数据非常多时,索引文件无法全部加载到内存,而进行磁盘IO是非常耗时的,当然是越少越好.所以虽然B+树和平衡二叉树的查询时间复杂度差不多,但是B+树相较于平衡二叉树更适合实现数据库的索引.
 
+
 ## 例子
 建立一个阶为4的B+树,随机一些数据进行插入(只用key,忽略value):
-10,17,3,29,4,5,18,6,22,1,33,35
+10,17,3,29,6,5,18,4,22,1,33,35
 首先,依次插入10,17,3,19,都能存放在初始节点中,在插入时会查找到正确的位置并且进行插入:
 
 ![B+Tree-1](http://img.icedsoul.cn/img/blog/bPlusTree/1.png)
 
-之后插入4,插入成功后发现当前节点的键的数量为5,大于了最大值4,所以需要从中间拆分为两部分,同时把拆分后的两个节点最大的键取出来插入到父节点中(图中橙色节点):
+之后插入6,插入成功后发现当前节点的键的数量为5,大于了最大值4,所以需要从中间拆分为两部分,同时把拆分后的两个节点最大的键取出来插入到父节点中(图中橙色节点):
 
 ![B+Tree-2](http://img.icedsoul.cn/img/blog/bPlusTree/2.png)
 
 ![B+Tree-3](http://img.icedsoul.cn/img/blog/bPlusTree/3.png)
 
-之后继续插入5,18,6都能够成功插入:
+之后继续插入5,18,4都能够成功插入.5插入时先从根节点出发，因为小于第一个key 6，所直接插入6对应的子节点。18插入时因为大于6小于29，所以插入到29对应的子节点。(如果插入的数大于29，同样会插入到29对应的子节点，但是同时会更新非叶子结点的值，保证非叶子结点键始终是它所指向的子节点的最大值。）插入的结果应该为
 
 ![B+Tree-4](http://img.icedsoul.cn/img/blog/bPlusTree/4.png)
 
-之后插入22,叶子节点超过上限,进行拆分,拆分后仍然将拆分的两部分的最大值插入到父节点:
+之后插入22,因为22大于6小于29，所以插入29对应叶子节点。插入后叶子节点超过上限,进行拆分,拆分后仍然将拆分的两部分的最大值插入到父节点:
 
 ![B+Tree-5](http://img.icedsoul.cn/img/blog/bPlusTree/5.png)
 
 ![B+Tree-6](http://img.icedsoul.cn/img/blog/bPlusTree/6.png)
 
 
-之后按照此规则继续插入1,这个4阶B树将变成:
+之后按照此规则继续插入1,1小于6，则直接插入到6对应叶子节点，这个4阶B树将变成:
 
 ![B+Tree-7](http://img.icedsoul.cn/img/blog/bPlusTree/7.png)
 
-再拆入33,35,插入35时,叶节点分解成两个,然后依旧将分解之后的结果发送到父节点,父节点更新节点和指针,更新后发现当前节点也超过了4个,那么当前节点也进行分解,生成父节点,如此重复,直到没有节点为止:
+再拆入33,35,注意，插入33时，因为33大于了最大值29，所以需要更新父节点的最大值，这样才能保证父节点键值始终是其指向的节点的最大值。插入35时,叶节点分解成两个,然后依旧将分解之后的结果发送到父节点,父节点更新节点和指针,更新后发现当前节点也超过了4个,那么当前节点也进行分解,生成父节点,如此重复,直到没有节点为止:
 
 ![B+Tree-8](http://img.icedsoul.cn/img/blog/bPlusTree/8.png)
 
@@ -275,8 +275,8 @@ public class BPlusTree <T, V extends Comparable<V>>{
 
             System.arraycopy(this.keys, 0, tempKeys, 0, i + 1);
             System.arraycopy(this.childs, 0, tempChilds, 0, i + 1);
-            System.arraycopy(this.keys, i + 1, tempKeys, 0, this.number - i - 1);
-            System.arraycopy(this.childs, i + 1, tempChilds, 0, this.number - i - 1);
+            System.arraycopy(this.keys, i + 1, tempKeys, i + 2, this.number - i - 1);
+            System.arraycopy(this.childs, i + 1, tempChilds, i + 2, this.number - i - 1);
             tempKeys[i + 1] = node2.keys[node2.number - 1];
             tempChilds[i + 1] = node2;
 
@@ -432,6 +432,9 @@ public class BPlusTree <T, V extends Comparable<V>>{
                     if(tempkey.compareTo((V)node.parent.keys[node.parent.number - 1]) > 0){
                         node.parent.keys[node.parent.number - 1] = tempkey;
                         node = node.parent;
+                    }
+                    else {
+                    	break;
                     }
                 }
 //                System.out.println("叶子节点,插入key: " + key + ",不需要拆分");
