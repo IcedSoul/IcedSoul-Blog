@@ -40,20 +40,22 @@ date: 2019-01-15 20:23:14
 ### 开发技术
 &nbsp;&nbsp;&nbsp;&nbsp;后端框架为Spring+SpringMVC+Hibernate，注解形式  
 &nbsp;&nbsp;&nbsp;&nbsp;前端框架为Bootstrap，使用插件有Layer.js等  
-&nbsp;&nbsp;&nbsp;&nbsp;前后端交互方式为ajax，使用json格式传递数据 
-<!--
+&nbsp;&nbsp;&nbsp;&nbsp;前后端交互方式为ajax，使用json格式传递数据
+
 ## 运行截图
-![主页](http://i4.buimg.com/588926/4f55a56c600353d3.png)
-![商品详情页](http://i2.muimg.com/588926/d9732cf1077364b1.png)
-![购物车](http://i2.muimg.com/588926/824c6423b8adee56.png)
-![订单状态](http://i4.buimg.com/588926/e768a19233e6a97c.png)
-![订单处理](http://i2.muimg.com/588926/00c922b032619e71.png)
-![订单处理](http://i2.muimg.com/588926/871acdbef93d7057.png)
---!>
+![主页](http://img.icedsoul.cn/img/blog/shopping/main_page.png)
+![商品详情页](http://img.icedsoul.cn/img/blog/shopping/product_detail.png)
+![购物车](http://img.icedsoul.cn/img/blog/shopping/shopping_car.png)
+![控制页面](http://img.icedsoul.cn/img/blog/shopping/control_page1.png)
+![控制页面](http://img.icedsoul.cn/img/blog/shopping/control_page2.png)
+![订单状态](http://img.icedsoul.cn/img/blog/shopping/order_page.png)
+![订单处理](http://img.icedsoul.cn/img/blog/shopping/order_handle.png)
+![搜索](http://img.icedsoul.cn/img/blog/shopping/search_page.png)
+
 ## 注意
 &nbsp;&nbsp;&nbsp;&nbsp;本项目仅用于学习交流，安全性极差，严禁用于除学习交流外其它用途，代码本身此处不做解释，我会在代码里面添加必要的注释。  
 &nbsp;&nbsp;&nbsp;&nbsp;项目下载之后需要修改相应的内容，如果完全没有开发基础请不要问我“为什么我下载了你的项目跑不起来？”“为什么我下载了你的项目运行报错了？”之类的问题，JavaWeb开发本身就比较依赖各种环境，要么你把你的环境改的和我用的一样，要么你把项目相关配置做改动使其能在你的环境下运行。没基础请先去学习相关的基础知识，然后再来了解此项目。个人精力有限，无法帮每个新手解决这种问题，我会尽量在注释里面说清楚要改哪些内容。  
-&nbsp;&nbsp;&nbsp;&nbsp;**项目对应MySQL数据库不需要专门用SQL创建，只需要在数据库新建一个shopping数据库即可，对应的表会在项目第一次运行时自动创建。**
+&nbsp;&nbsp;&nbsp;&nbsp;**项目对应MySQL数据库需要自己根据resources/properties路径下SQL文件创建**
 ## 在线演示地址
 [点我](http://119.23.212.211:8080/Shopping/) 服务器未过期可以访问，不保证一直可以访问。
 ## 源码下载
